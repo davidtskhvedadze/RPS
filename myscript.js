@@ -37,7 +37,7 @@ function game() {
     }
 
     if(playerWin > computerWin) {
-        return `Player Wins!`
+        return `Player Wins!`;
     } else {
         return `Computer Wins!`
     }
