@@ -1,48 +1,57 @@
 function getComputerChoice() {
  
-const choices = ['Rock', 'Paper', 'Scissors'];
-return choices[Math.floor(Math.random() * 3)];
+    const choices = ['Rock', 'Paper', 'Scissors'];
+    return choices[Math.floor(Math.random() * 3)];
+  
+  };
+  
+  let computerWin = 0;
+  let playerWin = 0;
+  
+  
+  function playRound(playerSelection, computerSelection) {
+      let result;
+  
+      if (playerSelection.toLowerCase() === computerSelection.toLowerCase()) {
+          result = `Tie! Go again!`;
+      } else if (playerSelection.toLowerCase() === `rock` && computerSelection.toLowerCase() === `paper`) {
+          computerWin++;
+          result = "You Lose! Paper beats Rock";
+      } else if (playerSelection.toLowerCase() === `paper` && computerSelection.toLowerCase() === `scissors`) {
+          computerWin++;
+          result ="You Lose! Scissors beats Paper";
+      } else if (playerSelection.toLowerCase() === `scissors` && computerSelection.toLowerCase() === `rock`) {
+          computerWin++;
+          result = "You Lose! Rock beats Scissors";
+      } else {
+          playerWin++;
+          result = `You Win! ${playerSelection[0].toUpperCase()}${playerSelection.slice(1).toLowerCase()} beats ${computerSelection}!`
+      }
+  
+      return result;
+  
+  };
+  
+  
+  const playerButtons = document.querySelectorAll('.player-choice');
+  const resultDiv = document.querySelector('#result');
+  const scoreDiv = document.querySelector('#scores');
+  
+  playerButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const playerChoice = button.id;
+      const computerChoice = getComputerChoice();
+      const roundResult = playRound(playerChoice, computerChoice);
 
-};
-
-let playerWin = 0;
-let computerWin = 0; 
-
-
-function playRound(playerSelection, computerSelection) {
-
-    if (playerSelection.toLowerCase() === computerSelection.toLowerCase()) {
-        return `Tie! Go again!`;
-    } else if (playerSelection.toLowerCase() === `rock` && computerSelection.toLowerCase() === `paper`) {
-        computerWin++;
-        return "You Lose! Paper beats Rock";
-    } else if (playerSelection.toLowerCase() === `paper` && computerSelection.toLowerCase() === `scissors`) {
-        computerWin++;
-        return "You Lose! Scissors beats Paper";
-    } else if (playerSelection.toLowerCase() === `scissors` && computerSelection.toLowerCase() === `rock`) {
-        computerWin++;
-        return "You Lose! Rock beats Scissors";
-    } else {
-        playerWin++;
-        return `You Win! ${playerSelection[0].toUpperCase()}${playerSelection.slice(1).toLowerCase()} beats ${computerSelection}!`
-    }
-
-};
-
-function game() {
-    for(let i = 0; i < 5; i++) {
-    const playerSelection = prompt("Enter your choice: Rock, Paper or Scissors");
-    const computerSelection = getComputerChoice();
-    console.log(playRound(playerSelection, computerSelection));
-    }
-
-    if(playerWin > computerWin) {
-        return `Player Wins!`;
-    } else {
-        return `Computer Wins!`
-    }
-
-};
-
-
-console.log(game());
+      resultDiv.textContent = roundResult
+      
+      scoreDiv.textContent = `Player: ${playerWin} - Computer: ${computerWin}`;
+      if (playerWin === 5 || computerWin === 5) {
+        const winner = playerWin > computerWin ? 'Player' : 'Computer';
+        resultDiv.textContent += ` ${winner} wins the game!`;
+        playerWin = 0;
+        computerWin = 0;
+      }
+    });
+  });
+  
